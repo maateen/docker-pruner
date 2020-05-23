@@ -2,6 +2,23 @@
 
 Clean up all unused Docker containers, images (both dangling and unreferenced), networks, and volumes regularly.
 
+## What it prunes?
+
+- Container
+    - Dead
+    - Exited
+- Image
+    - Dangling
+    - None tag
+    - Unused
+        - Created before 1 month
+- Network
+    - Custom
+        - Unused
+- Volume
+    - Local
+        - Unsed
+
 ## Minimum Requirements
 
 - Docker Server
