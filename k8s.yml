@@ -1,0 +1,43 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: docker-pruner
+  namespace: kube-system
+  labels:
+    app: docker-pruner
+spec:
+  selector:
+    matchLabels:
+      app: docker-pruner
+  updateStrategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+  template:
+    metadata:
+      labels:
+        app: docker-pruner
+    spec:
+      containers:
+      - name: docker-pruner
+        image: maateen/docker-pruner
+        imagePullPolicy: Always
+        env:
+        - name: PRUNER_INTERVAL
+          value: 24h
+        resources:
+          limits:
+            cpu: 25m
+            memory: 50Mi
+          requests:
+            cpu: 25m
+            memory: 50Mi
+        volumeMounts:
+          - name: dockersocket
+            mountPath: /var/run/docker.sock
+            readOnly: true
+      volumes:
+        - name: dockersocket
+          hostPath:
+            path: /var/run/docker.sock
